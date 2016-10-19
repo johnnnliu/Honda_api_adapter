@@ -58,19 +58,18 @@ function getVehicle(vehicleid){
 function getVehicleComponents(vehicleid){
 	getEndpoints();
 
-	INPUT.path = baseEndpoint + vehiclesEndpoint + vehicleid + componentsEndpoint;
+	INPUT.path = baseEndpoint + vehiclesEndpoint + vehicleid + "/" + componentsEndpoint;
+
 	INPUT.method = GET;
 	return MFP.Server.invokeHttp(INPUT);
 }
-
-//where={"_id":"54321"}
 
 function setVehicleComponentStatus(componentID, status){
 	getEndpoints();
 
 	var dt = new Date();
 
-	var component =  "componentStatus=" + status;
+	var component =  "componentStatus=" + status + '&componentDate=' + dt.toISOString();
 	var where = encodeURIComponent('{"_id": "' + componentID + '"}')
 
 
@@ -86,9 +85,6 @@ function setVehicleComponentStatus(componentID, status){
 			contentType: URLENCODED_CONTENT_TYPE
 		}
 	};
-
-	MFP.Logger.info("==> Debug");
-	MFP.Logger.info(input.path);
 
 	return MFP.Server.invokeHttp(input);
 }
