@@ -14,8 +14,11 @@
 	<description>hondaAPIAdapter</description>
 	<connectivity>
 		<connectionPolicy xsi:type="http:HTTPConnectionPolicyType">
+			<!--<protocol>http</protocol>-->
+			<!--<domain>localhost</domain>-->
+			<!--<port>4567</port>-->
 			<protocol>https</protocol>
-			<domain>mobilefirstplatform.ibmcloud.com</domain>
+			<domain>api.us.apiconnect.ibmcloud.com</domain>
 			<port>443</port>
 			<connectionTimeoutInMilliseconds>30000</connectionTimeoutInMilliseconds>
 			<socketTimeoutInMilliseconds>30000</socketTimeoutInMilliseconds>
@@ -23,7 +26,18 @@
 		</connectionPolicy>
 	</connectivity>
 
-	<procedure name="getFeed"/>
-	<procedure name="unprotected" secured="false"/>
+	<!-- Publicly available procedures -->
+	<procedure name="getOwner"/>
+	<procedure name="getOwnerVehicles"/>
+	<procedure name="getVehicle"/>
+	<procedure name="getVehicleComponents"/>
+	<procedure name="setVehicleComponentStatus"/>
+
+	<!-- Configurable Properties -->
+	<property name="baseEndpoint" displayName="Base Endpoint" defaultValue="/hondapot-devpot/honda-dev-catalog/api/"/>
+	<property name="ownersEndpoint" displayName="Owners Endpoint" defaultValue="owners/" />
+	<property name="vehiclesEndpoint" displayName="Vehicles Endpoint" defaultValue="vehicles/" />
+	<property name="componentsEndpoint" displayName="Components Endpoint" defaultValue="components/" />
+	<property name="updateEndpoint" displayName="Update Endpoint" defaultValue="update" />
 
 </mfp:adapter>
