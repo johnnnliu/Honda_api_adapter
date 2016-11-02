@@ -39,5 +39,6 @@
 	<property name="vehiclesEndpoint" displayName="Vehicles Endpoint" defaultValue="vehicles/" />
 	<property name="componentsEndpoint" displayName="Components Endpoint" defaultValue="components/" />
 	<property name="updateEndpoint" displayName="Update Endpoint" defaultValue="update" />
+	<property name="carVinCheckEndpoint" displayName="Car VIN Check Endpoint" defaultValue="/hondapot-devpot/honda-dev-catalog/carvin/vin/" />
 
 </mfp:adapter>

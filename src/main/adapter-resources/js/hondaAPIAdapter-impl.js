@@ -1,4 +1,4 @@
-var CLIENT_ID = 'cb33657e-7328-45a1-b579-b87157400979';
+var CLIENT_ID = '25fcaa77-a968-4966-af49-9bbfa130aac7';
 var ACCEPT = 'application/json';
 var JSON_CONTENT_TYPE = 'application/json';
 var URLENCODED_CONTENT_TYPE = 'application/x-www-form-urlencoded';
@@ -11,7 +11,7 @@ var ownersEndpoint;
 var vehiclesEndpoint;
 var componentsEndpoint;
 var updateEndpoint;
-
+var carVinEndpoint;
 
 var INPUT = {
 	method : this.GET,
@@ -29,6 +29,7 @@ function getEndpoints(){
 	vehiclesEndpoint = MFP.Server.getPropertyValue("vehiclesEndpoint");
 	componentsEndpoint = MFP.Server.getPropertyValue("componentsEndpoint");
 	updateEndpoint  = MFP.Server.getPropertyValue("updateEndpoint");
+	carVinEndpoint = MFP.Server.getPropertyValue("carVinCheckEndpoint");
 }
 
 function getOwner(ownerid) {
@@ -44,7 +45,29 @@ function getOwnerVehicles(ownerid){
 
 	INPUT.path = baseEndpoint + ownersEndpoint + ownerid + "/" + vehiclesEndpoint;
 	INPUT.method = GET;
-	return MFP.Server.invokeHttp(INPUT);
+	var vehicles = MFP.Server.invokeHttp(INPUT);
+
+	var owner = getOwner(ownerid);
+	vehicles.owner = {};
+	vehicles.owner.name = owner.name;
+	vehicles.owner.phone = owner.phone;
+
+	for (var i=0; i < vehicles.array.length; i++){
+
+		// Verify that the vin is in the vin database.
+		INPUT.path = carVinEndpoint + vehicles.array[i].vin;
+		var result = MFP.Server.invokeHttp(INPUT);
+		vehicles.array[i].verified = (result.array.length > 0);
+
+		// Get the vehicle components
+		var components = getVehicleComponents(vehicles.array[i].vin);
+		vehicles.array[i].components = components.array;
+	}
+
+	vehicles.vehicles = vehicles["array"];
+	delete vehicles["array"];
+
+	return vehicles;
 }
 
 function getVehicle(vehicleid){
