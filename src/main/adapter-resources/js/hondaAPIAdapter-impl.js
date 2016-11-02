@@ -37,7 +37,9 @@ function getOwner(ownerid) {
 
 	INPUT.path = baseEndpoint + ownersEndpoint + ownerid;
 	INPUT.method = GET;
-	return MFP.Server.invokeHttp(INPUT);
+	var response = MFP.Server.invokeHttp(INPUT);
+//	response.message = "JOHN WAS HERE";
+	return response;
 }
 
 function getOwnerVehicles(ownerid){
